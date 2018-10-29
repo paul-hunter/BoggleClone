@@ -1,0 +1,44 @@
+<!-- 
+<html>
+    <body oncontextmenu='return false;'> <!--figure out what this is -->
+	<br><br><br>
+	<label id='status'></label>
+	<script>
+	 const size = 4;
+
+	 // returns element object representing element whose id prop matches specified string
+	 // Element is general base calss that all objects in a Document inherit
+	 let status = document.getElementById('status');
+	 
+	 //addEventListener, function that will be called when specified event is delivered to target
+	 //TESTING REMOVE LATER document.write(status==null)
+	 status.addEventListener('click', init)
+
+	 let board = new Array(size);
+	 //creation of 2d array
+	 for (let i = 0; i < board.length; i++) {
+	     board[i] = new Array(size);
+	 }
+
+	 init();
+
+	 function init() {
+	     status.innerHTML = ('boggleboggleboggleboggle');
+	     for (let i = 0; i < size; i++) {
+		 for (let j = 0; j < size; j++) {
+		     //let index = something identifiable maybe look at mine.html code
+		     board[i][j] = document.createElement('img');
+		     board[i][j].src = 'svg/036-letter-a.svg';
+		     board[i][j].style = 'position:absolute; height:30px; width:30px';
+		     board[i][j].style.top = 150 + size * 30;
+		     board[i][j].style.left = 50 + size & 30;
+		     //board[i][j].addEventListener('mousedown', click);
+		     document.body.appendChild(board[i][j]);
+		     
+		 }
+	     }
+	 }
+	 
+	</script>
+
+</html>
