@@ -1,126 +1,17 @@
 <html>
-    <br>
-    <p id='timer'></p>
-    <script>
-     //timer script
-
-     let countdownAudio = new Audio('media/ding.wav');
-     let x = setInterval(calc, 100); //updates every 1/10 second approximately
-     
-     let start = Date.now();
-     function calc() {
-	 //explicitly uses Date.now() for precision
-	 let delta = Date.now() - start;
-	 
-	 let secondsLeft = 180 - Math.floor(delta/1000); //seconds until end. 3 minute games
-	 let minutes = Math.floor(secondsLeft / 60);
-	 let seconds = secondsLeft % 60;
-	 
-	 let timerEl = document.getElementById('timer');
-	 timerEl.innerHTML = minutes + ':' + seconds.toLocaleString(undefined,{minimumIntegerDigits:2});
-
-	 if (secondsLeft < 1) {
-	     timerEl.innerHTML = "TIME'S UP!";
-	 }
-	 
-	 if (secondsLeft === 0) {
-	     countdownAudio.loop = false;
-	     countdownAudio.play();
-	 }
-     }
-    </script>
-    <label id='words'></label>
-    <label id='status'></label>
-    <script>
-     //==============================
-     //==============================
-     //TODO
-     //==============================
-     //==============================
-     //timer
-     //clicker functions
-     
-     const size = 4;
-     // returns element object representing element whose id prop matches specified string
-     // Element is general base calss that all objects in a Document inherit
-     let status = document.getElementById('status');
-
-     //addEventListener, function that will be called when specified event is delivered to target
-     //
-     //status.addEventListener('click', init) //for restart?
-
-     let board = new Array(size);
-     let tile = new Array(size);
-     //creation of 2d array
-     for (let i = 0; i < board.length; i++) {
-	 board[i] = new Array(size);
-     }
-
-     //16 dice
-     let dice = [
-	 ['r', 'i', 'f', 'o', 'b', 'x'],
-	 ['i', 'f', 'e', 'h', 'e', 'y'],
-	 ['d', 'e', 'n', 'o', 'w', 's'],
-	 ['u', 't', 'o', 'k', 'n', 'd'],
-	 ['h', 'm', 's', 'r', 'a', 'o'],
-	 ['l', 'u', 'p', 'e', 't', 's'],
-	 ['a', 'c', 'i', 't', 'o', 'a'],
-	 ['y', 'l', 'g', 'k', 'u', 'e'],
-	 ['q', 'b', 'm', 'j', 'o', 'a'],
-	 ['e', 'h', 'i', 's', 'p', 'n'],
-	 ['v', 'e', 't', 'i', 'g', 'n'],
-	 ['b', 'a', 'l', 'i', 'y', 't'],
-	 ['e', 'z', 'a', 'v', 'n', 'd'],
-	 ['r', 'a', 'l', 'e', 's', 'c'],
-	 ['u', 'w', 'i', 'l', 'r', 'g'],
-	 ['p', 'a', 'c', 'e', 'm', 'd']
-     ];
-     //array of randomly picked letters from 16 dice specified above
-     let letters = dice.map(a => a[Math.floor(Math.random() * a.length)]);
-     //shuffles letters array
-     letters = shuffle(letters);
-     
-     init();
-
-     function init() {
-	 status.innerHTML = ('find words');
-	 let letterIndex = 0;
-	 for (let i = 0; i < size; i++) {
-	     for (let j = 0; j < size; j++) {
-		 //let index = i * size + j;//using xy instead
-		 board[i][j] = document.createElement('img');
-		 board[i][j].src = 'svg/letter-' + letters[letterIndex++] + '.svg';
-		 board[i][j].style = 'position:absolute; height:75px; width:75px';
-		 board[i][j].style.top = 150 + i * 80;
-		 board[i][j].style.left = 50 + j * 80;
-		 board[i][j].rowcol = [i, j]; //row, col representation
-		 board[i][j].addEventListener('mousedown', click);
-		 document.body.appendChild(board[i][j]);
-	     }
-	 }
-     }
-
-     function click(event) {
-	 let source = event.target;
-	 let xy = source.rowcol;
-
-     }
-
-     function shuffle(arr) {
-	 let current = arr.length;
-	 let temp = arr[0]; //temporary initialization
-	 let rand = 0; //random index
-
-	 while (current > 0) {
-	     rand = Math.floor(Math.random() * current);
-	     current -= 1;
-	     //swaps randomly selected value into right most index
-	     //and goes from right to left repeating this
-	     temp = arr[current];
-	     arr[current] = arr[rand];
-	     arr[rand] = temp;
-	 }
-	 return arr;	 
-     }
-    </script>
+    <head>
+	<title>Boggle</title>
+	<link rel='stylesheet' href='styles/style.css'>
+    </head>
+    <body>
+	<br><br>
+	<p id='timer'></p>
+	<label id='status'></label>
+	<br>
+	<label id='words'></label>
+	<br>
+	<label id='wordLabel'></label>
+	<script src='scripts/countdown.js'></script>
+	<script src='scripts/boggle.js'></script>
+    </body>
 </html>
