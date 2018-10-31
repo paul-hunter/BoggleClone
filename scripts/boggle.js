@@ -1,18 +1,12 @@
 //==============================
-//TODO
-// -finish function legal and associated clicking function
+// TODO
 // -Qu instead of Q edit images
-// -linkedlist of wordlist
-// -some nice functions including a toString? could be nice
-// -add logic on which buttons you're allowed to press
-//   -adjacent and not previously pressed
 // -implement dictionary checking and point scoring
-// -add graphic for button press and "
+// -add graphic for button press and submit
 //==============================
 
 const size = 4;
-// returns element object representing element whose id prop matches specified string
-// Element is general base class that all objects in a Document inherit
+
 let status = document.getElementById('status');
 let words = document.getElementById('words');
 let wordLabel = document.getElementById('wordLabel');
@@ -21,11 +15,11 @@ let word = '';
 let wordList = new Array();
 let priorCoord = new Array();
 
-//addEventListener, function that will be called when specified event is delivered to target
 //status.addEventListener('click', init) //for restart?
 
 let board = new Array(size);
 let tile = new Array(size);
+
 //creation of 2d array
 for (let i = 0; i < board.length; i++) {
     board[i] = new Array(size);
@@ -51,8 +45,9 @@ let dice = [
     ['p', 'a', 'c', 'e', 'm', 'd']
 ];
 
-//array of randomly picked letters from 16 dice specified above
+//essentially rolls each die and puts results in array
 let letters = dice.map(a => a[Math.floor(Math.random() * a.length)]);
+
 //shuffles letters array
 letters = shuffle(letters);
 
@@ -68,7 +63,7 @@ function init() {
 	    board[i][j] = document.createElement('img');
 	    board[i][j].src = 'images/letter-' + letter + '.svg';
 	    board[i][j].style = 'position:absolute; height:75px; width:75px';
-	    board[i][j].style.top = 150 + i * 80;
+	    board[i][j].style.top = 200 + i * 80;
 	    board[i][j].style.left = 50 + j * 80;
 	    board[i][j].rowcol = [i, j]; //row, col representation
 	    board[i][j].letter = letter;
@@ -85,28 +80,42 @@ function init() {
     document.body.appendChild(submit);
 }
 
+//click on 4x4 grid of letters
 function click(event) {
     let source = event.target;
     let rowcol = source.rowcol;
     let letter = source.letter;
-    //use function legal. finish this
-    //can use A.length = 0 to clear array
-    word += letter;
-    words.innerHTML = word;
+    if (legal(source)) {
+	word += letter;
+	words.innerHTML = word;
+	priorCoord.push(source); //might just do rowcol
+    }
 }
 
+//click on submission button
 function submitClick(event) {
     if (word.length >= 3) {
 	wordList.push(word);
 	word = '';
 	words.innerHTML = '';
+	priorCoord.length = 0; //clears char array
     }
-    wordLabel.innerHTML = wordList.toString(); //temporary, find prettier way to display
+    wordLabel.innerHTML = wordList.toString(); //temporary, find prettier way to display probably want in a different place in code too
 }
 
-function legal(clicked) {
-    //priorCoord[arrlength-1] +- clicked.coord <=1
-    //clicked not in priorCoord arr
+function legal(clicked) { //returns boolean value
+    //first letter of word
+    if (priorCoord.length === 0) {
+	return true;
+    }
+    else {
+	let prior = priorCoord[priorCoord.length-1].rowcol; //letter clicked immediately prior coord
+	let cur = clicked.rowcol; //current letter coord
+	let row = Math.abs(cur[0]-prior[0]) <= 1; //checks adjacency
+	let col = Math.abs(cur[1]-prior[1]) <= 1; 
+	let prevLetter = !priorCoord.includes(clicked); //checks if letter previously clicked
+	return row && col && prevLetter;
+    }
 }
 
 //shuffles an array randomly
