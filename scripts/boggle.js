@@ -1,8 +1,9 @@
 //==============================
 // TODO
-// -Qu instead of Q edit images
 // -implement dictionary checking and point scoring
 // -add graphic for button press and submit
+// -add a 'clear' button
+// -allow typing with smart letter recognition
 //==============================
 
 const size = 4;
@@ -15,8 +16,7 @@ let word = '';
 let wordList = new Array();
 let priorCoord = new Array();
 
-//status.addEventListener('click', init) //for restart?
-
+//board creation
 let board = new Array(size);
 let tile = new Array(size);
 
@@ -35,7 +35,7 @@ let dice = [
     ['l', 'u', 'p', 'e', 't', 's'],
     ['a', 'c', 'i', 't', 'o', 'a'],
     ['y', 'l', 'g', 'k', 'u', 'e'],
-    ['q', 'b', 'm', 'j', 'o', 'a'],
+    ['qu', 'b', 'm', 'j', 'o', 'a'],
     ['e', 'h', 'i', 's', 'p', 'n'],
     ['v', 'e', 't', 'i', 'g', 'n'],
     ['b', 'a', 'l', 'i', 'y', 't'],
@@ -51,15 +51,17 @@ let letters = dice.map(a => a[Math.floor(Math.random() * a.length)]);
 //shuffles letters array
 letters = shuffle(letters);
 
+// status.addEventListener('click', init)
+
 init();
 
 function init() {
     status.innerHTML = ('find words');
-    let letterIndex = 0;
+    //creates 4x4 grid
     for (let i = 0; i < size; i++) {
 	for (let j = 0; j < size; j++) {
 	    //let index = i * size + j;//using xy instead
-	    let letter = letters[letterIndex++];
+	    let letter = letters.pop();
 	    board[i][j] = document.createElement('img');
 	    board[i][j].src = 'images/letter-' + letter + '.svg';
 	    board[i][j].style = 'position:absolute; height:75px; width:75px';
@@ -88,7 +90,7 @@ function click(event) {
     if (legal(source)) {
 	word += letter;
 	words.innerHTML = word;
-	priorCoord.push(source); //might just do rowcol
+	priorCoord.push(source);
     }
 }
 
@@ -100,12 +102,15 @@ function submitClick(event) {
 	words.innerHTML = '';
 	priorCoord.length = 0; //clears char array
     }
-    wordLabel.innerHTML = wordList.toString(); //temporary, find prettier way to display probably want in a different place in code too
+    //temporary, find prettier way to display probably want in a different place in code too
+    wordLabel.innerHTML = wordList.toString(); 
 }
 
-function legal(clicked) { //returns boolean value
-    //first letter of word
-    if (priorCoord.length === 0) {
+//determines if letter clicked a legal click or not
+//checks if letter adjacent to (including diag)
+//and that letter has not been clicked previously
+function legal(clicked) {
+    if (priorCoord.length === 0) { //first letter of word
 	return true;
     }
     else {
@@ -133,5 +138,5 @@ function shuffle(arr) {
 	arr[current] = arr[rand];
 	arr[rand] = temp;
     }
-    return arr;	 
+    return arr;
 }
