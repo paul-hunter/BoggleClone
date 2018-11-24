@@ -1,7 +1,7 @@
 //==============================
 // TODO
 // -implement dictionary checking and point scoring
-// -add graphic for button press and submit
+// -add graphic for button press
 // -add a 'clear' button
 // -allow typing with smart letter recognition
 //==============================
@@ -73,13 +73,6 @@ function init() {
 	    document.body.appendChild(board[i][j]);
 	}
     }
-    let submit = document.createElement('img');
-    submit.src = 'images/letter-z.svg'; //temporary z
-    submit.style = 'position:absolute; height:30px; width:75px';
-    submit.style.top = 100;
-    submit.style.left = 370;
-    submit.addEventListener('mousedown', submitClick);
-    document.body.appendChild(submit);
 }
 
 //click on 4x4 grid of letters
