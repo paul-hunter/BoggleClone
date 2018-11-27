@@ -1,11 +1,11 @@
 //timer script
 
 let countdownAudio = new Audio('audio/ding.wav');
-let timer= document.getElementById('timer');
-
-let x = setInterval(calc, 100); //updates every 1/10 second approximately
+let timer = document.getElementById('timer');
 
 let start = Date.now();
+let x = setInterval(calc, 100); //updates every 1/10 second approximately
+
 function calc() {
     //explicitly uses Date.now() for precision
     let delta = Date.now() - start;
@@ -25,4 +25,8 @@ function calc() {
 	countdownAudio.loop = false;
 	countdownAudio.play();
     }
+}
+
+function resetClock() {
+    start = Date.now();
 }

@@ -8,9 +8,15 @@
 
 const size = 4;
 
-let status = document.getElementById('status');
 let words = document.getElementById('words');
 let wordLabel = document.getElementById('wordLabel');
+let submit = document.getElementById('submit');
+let reset = document.getElementById('reset');
+submit.addEventListener('click', submitClick);
+reset.addEventListener('click', resetBoard);
+//resetClock from countdown.js
+reset.addEventListener('click', resetClock);
+
 
 let word = '';
 let wordList = new Array();
@@ -45,18 +51,15 @@ let dice = [
     ['p', 'a', 'c', 'e', 'm', 'd']
 ];
 
-//essentially rolls each die and puts results in array
-let letters = dice.map(a => a[Math.floor(Math.random() * a.length)]);
-
-//shuffles letters array
-letters = shuffle(letters);
-
-// status.addEventListener('click', init)
-
 init();
 
 function init() {
-    status.innerHTML = ('find words');
+    //essentially rolls each die and puts results in array
+    let letters = dice.map(a => a[Math.floor(Math.random() * a.length)]);
+
+    //shuffles letters array
+    letters = shuffle(letters);
+
     //creates 4x4 grid
     for (let i = 0; i < size; i++) {
 	for (let j = 0; j < size; j++) {
@@ -65,7 +68,7 @@ function init() {
 	    board[i][j] = document.createElement('img');
 	    board[i][j].src = 'images/letter-' + letter + '.svg';
 	    board[i][j].style = 'position:absolute; height:75px; width:75px';
-	    board[i][j].style.top = 200 + i * 80;
+	    board[i][j].style.top = 150 + i * 80;
 	    board[i][j].style.left = 50 + j * 80;
 	    board[i][j].rowcol = [i, j]; //row, col representation
 	    board[i][j].letter = letter;
@@ -73,6 +76,15 @@ function init() {
 	    document.body.appendChild(board[i][j]);
 	}
     }
+}
+
+function resetBoard() {
+    for (let i = 0; i < size; i++) {
+	for (let j = 0; j < size; j++) {
+	    document.body.removeChild(board[i][j]);
+	}
+    }
+    init();
 }
 
 //click on 4x4 grid of letters
