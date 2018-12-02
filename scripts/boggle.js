@@ -19,10 +19,12 @@ reset.addEventListener('click', resetClock);
 
 
 let word = '';
+// List of words found
 let wordList = new Array();
+// Location of last clicked letters
 let priorCoord = new Array();
 
-//board creation
+// Board creation
 let board = new Array(size);
 let tile = new Array(size);
 
@@ -84,6 +86,10 @@ function resetBoard() {
 	    document.body.removeChild(board[i][j]);
 	}
     }
+    word = ''              // Resets current word
+    wordList.length = 0;   // Clears current found words
+    priorCoord.length = 0; // Resets prior letters clicked
+    wordLabel.innerHTML = wordList.toString(); // Resets displayed words
     init();
 }
 
